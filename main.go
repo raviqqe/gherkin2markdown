@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/cucumber/gherkin-go"
 )
 
 func main() {
-	err := command()
+	err := command(os.Args[1:], os.Stdout)
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -16,8 +17,8 @@ func main() {
 	}
 }
 
-func command() error {
-	f, err := os.Open(os.Args[1])
+func command(ss []string, w io.Writer) error {
+	f, err := os.Open(ss[0])
 
 	if err != nil {
 		return err
@@ -29,7 +30,7 @@ func command() error {
 		return err
 	}
 
-	fmt.Print(newRenderer().Render(d))
+	fmt.Fprint(w, newRenderer().Render(d))
 
 	return nil
 }
