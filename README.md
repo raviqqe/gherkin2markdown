@@ -1,6 +1,6 @@
 # cucumber2markdown
 
-A command to convert cucumber files into Markdown.
+A command to convert Cucumber files into Markdown.
 
 ## License
 
