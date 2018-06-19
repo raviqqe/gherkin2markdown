@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: golang
-    working_directory: /go/src/github.com/raviqqe/cucumber2markdown
+    working_directory: /go/src/github.com/raviqqe/gherkin2markdown
     steps:
       - checkout
 
