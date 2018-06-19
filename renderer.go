@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"strings"
 
 	"github.com/cucumber/gherkin-go"
@@ -31,6 +30,14 @@ func (r renderer) render(x interface{}) {
 			r.writeLine("")
 			r.render(x)
 		}
+	case *gherkin.Background:
+		r.writeLine("## Background (" + x.Name + ")")
+		r.writeDescription(x.Description)
+
+		for _, s := range x.Steps {
+			r.writeLine("")
+			r.render(s)
+		}
 	case *gherkin.Scenario:
 		r.writeLine("## " + x.Name)
 		r.writeDescription(x.Description)
@@ -51,7 +58,7 @@ func (r renderer) render(x interface{}) {
 		r.writeLine(x.Content)
 		r.writeLine("```")
 	default:
-		panic(errors.New("unreachable"))
+		panic("unreachable")
 	}
 }
 

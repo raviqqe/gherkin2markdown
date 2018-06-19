@@ -71,6 +71,16 @@ Feature: Foo
 
 baz`,
 		},
+		{`
+Feature: Foo
+  Background: Bar
+    When I do something`, `
+# Foo
+
+## Background (Bar)
+
+_When_ I do something`,
+		},
 	} {
 		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]))
 
