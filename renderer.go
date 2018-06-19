@@ -25,6 +25,7 @@ func (r renderer) render(x interface{}) {
 	switch x := x.(type) {
 	case *gherkin.Feature:
 		r.writeLine("# " + x.Name)
+		r.writeDescription(x.Description)
 
 		for _, x := range x.Children {
 			r.writeLine("")
@@ -32,11 +33,7 @@ func (r renderer) render(x interface{}) {
 		}
 	case *gherkin.Scenario:
 		r.writeLine("## " + x.Name)
-
-		if x.Description != "" {
-			r.writeLine("")
-			r.writeLine(x.Description)
-		}
+		r.writeDescription(x.Description)
 
 		for _, s := range x.Steps {
 			r.writeLine("")
@@ -55,6 +52,13 @@ func (r renderer) render(x interface{}) {
 		r.writeLine("```")
 	default:
 		panic(errors.New("unreachable"))
+	}
+}
+
+func (r renderer) writeDescription(s string) {
+	if s != "" {
+		r.writeLine("")
+		r.writeLine(strings.TrimSpace(s))
 	}
 }
 

@@ -24,4 +24,8 @@ jobs:
 
       - run:
           name: Test
-          command: go test
+          command: go test -covermode atomic -coverprofile coverage.txt
+
+      - run:
+          name: Coverage Report
+          command: curl -s https://codecov.io/bash | bash
