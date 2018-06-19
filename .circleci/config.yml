@@ -16,7 +16,7 @@ jobs:
 
       - run:
           name: Lint
-          command: gometalinter --disable gas --disable vetshadow
+          command: gometalinter --disable gas --disable gocyclo --disable vetshadow
 
       - run:
           name: Build
