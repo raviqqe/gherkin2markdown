@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-
-	"github.com/cucumber/gherkin-go"
 )
 
 func main() {
@@ -16,19 +14,11 @@ func main() {
 }
 
 func command(ss []string, w io.Writer) error {
-	f, err := os.Open(ss[0])
+	args := getArguments(ss)
 
-	if err != nil {
-		return err
+	if args.File == "" {
+		return convertFiles(args.SrcDir, args.DestDir)
 	}
 
-	d, err := gherkin.ParseGherkinDocument(f)
-
-	if err != nil {
-		return err
-	}
-
-	fmt.Fprint(w, newRenderer().Render(d))
-
-	return nil
+	return convertFile(args.File, w)
 }
