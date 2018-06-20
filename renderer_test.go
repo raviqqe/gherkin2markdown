@@ -33,7 +33,7 @@ _Given_ that
 
 _When_ I do something
 
-_Then_ something happens`,
+_Then_ something happens.`,
 		},
 		{`
 Feature: Foo
@@ -79,7 +79,7 @@ Feature: Foo
 
 ## Background (Bar)
 
-_When_ I do something`,
+_When_ I do something.`,
 		},
 	} {
 		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]))

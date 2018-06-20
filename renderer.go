@@ -33,25 +33,15 @@ func (r renderer) render(x interface{}) {
 	case *gherkin.Background:
 		r.writeLine("## Background (" + x.Name + ")")
 		r.writeDescription(x.Description)
-
-		for _, s := range x.Steps {
-			r.writeLine("")
-			r.render(s)
-		}
+		r.render(x.Steps)
 	case *gherkin.Scenario:
 		r.writeLine("## " + x.Name)
 		r.writeDescription(x.Description)
-
-		for _, s := range x.Steps {
+		r.render(x.Steps)
+	case []*gherkin.Step:
+		for i, s := range x {
 			r.writeLine("")
-			r.render(s)
-		}
-	case *gherkin.Step:
-		r.writeLine("_" + strings.TrimSpace(x.Keyword) + "_ " + x.Text)
-
-		if x.Argument != nil {
-			r.writeLine("")
-			r.render(x.Argument)
+			r.renderStep(s, i == len(x)-1)
 		}
 	case *gherkin.DocString:
 		r.writeLine("```")
@@ -59,6 +49,19 @@ func (r renderer) render(x interface{}) {
 		r.writeLine("```")
 	default:
 		panic("unreachable")
+	}
+}
+
+func (r renderer) renderStep(s *gherkin.Step, last bool) {
+	if last && s.Argument == nil && s.Text[len(s.Text)-1] != '.' {
+		s.Text += "."
+	}
+
+	r.writeLine("_" + strings.TrimSpace(s.Keyword) + "_ " + s.Text)
+
+	if s.Argument != nil {
+		r.writeLine("")
+		r.render(s.Argument)
 	}
 }
 
