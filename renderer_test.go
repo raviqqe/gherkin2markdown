@@ -88,9 +88,3 @@ _When_ I do something.`,
 		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", newRenderer().Render(d))
 	}
 }
-
-func TestRendererRenderPanic(t *testing.T) {
-	assert.Panics(t, func() {
-		newRenderer().render(nil)
-	})
-}

@@ -15,41 +15,52 @@ func newRenderer() renderer {
 }
 
 func (r renderer) Render(d *gherkin.GherkinDocument) string {
-	r.render(d.Feature)
+	r.renderFeature(d.Feature)
 
 	return r.Builder.String()
 }
 
-func (r renderer) render(x interface{}) {
-	switch x := x.(type) {
-	case *gherkin.Feature:
-		r.writeLine("# " + x.Name)
-		r.writeDescription(x.Description)
+func (r renderer) renderFeature(f *gherkin.Feature) {
+	r.writeLine("# " + f.Name)
+	r.writeDescription(f.Description)
 
-		for _, x := range x.Children {
-			r.writeLine("")
-			r.render(x)
+	for _, x := range f.Children {
+		r.writeLine("")
+
+		switch x := x.(type) {
+		case *gherkin.Background:
+			r.renderBackground(x)
+		case *gherkin.Scenario:
+			r.renderScenario(x)
+		default:
+			panic("unreachable")
 		}
-	case *gherkin.Background:
-		r.writeLine("## Background (" + x.Name + ")")
-		r.writeDescription(x.Description)
-		r.render(x.Steps)
-	case *gherkin.Scenario:
-		r.writeLine("## " + x.Name)
-		r.writeDescription(x.Description)
-		r.render(x.Steps)
-	case []*gherkin.Step:
-		for i, s := range x {
-			r.writeLine("")
-			r.renderStep(s, i == len(x)-1)
-		}
-	case *gherkin.DocString:
-		r.writeLine("```")
-		r.writeLine(x.Content)
-		r.writeLine("```")
-	default:
-		panic("unreachable")
 	}
+}
+
+func (r renderer) renderBackground(b *gherkin.Background) {
+	r.writeLine("## Background (" + b.Name + ")")
+	r.writeDescription(b.Description)
+	r.renderSteps(b.Steps)
+}
+
+func (r renderer) renderScenario(s *gherkin.Scenario) {
+	r.writeLine("## " + s.Name)
+	r.writeDescription(s.Description)
+	r.renderSteps(s.Steps)
+}
+
+func (r renderer) renderSteps(ss []*gherkin.Step) {
+	for i, s := range ss {
+		r.writeLine("")
+		r.renderStep(s, i == len(ss)-1)
+	}
+}
+
+func (r renderer) renderDocString(d *gherkin.DocString) {
+	r.writeLine("```")
+	r.writeLine(d.Content)
+	r.writeLine("```")
 }
 
 func (r renderer) renderStep(s *gherkin.Step, last bool) {
@@ -61,7 +72,13 @@ func (r renderer) renderStep(s *gherkin.Step, last bool) {
 
 	if s.Argument != nil {
 		r.writeLine("")
-		r.render(s.Argument)
+
+		switch x := s.Argument.(type) {
+		case *gherkin.DocString:
+			r.renderDocString(x)
+		default:
+			panic("unreachable")
+		}
 	}
 }
 
