@@ -65,7 +65,7 @@ _Given_ a file named "main.cloe" with:
 
 _When_ I successfully run `cloe main.cloe`
 
-_Then_ the stdout should contain exactly "2049"
+_Then_ the stdout should contain exactly "2049".
 
 ## Subtract a number from the other
 
@@ -77,7 +77,7 @@ _Given_ a file named "main.cloe" with:
 
 _When_ I successfully run `cloe main.cloe`
 
-_Then_ the stdout should contain exactly "2016"
+_Then_ the stdout should contain exactly "2016".
 ````
 
 ## License
