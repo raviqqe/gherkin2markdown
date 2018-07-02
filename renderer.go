@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/cucumber/gherkin-go"
+	messages "github.com/cucumber/cucumber-messages-go"
 )
 
 type renderer struct {
@@ -14,56 +14,56 @@ func newRenderer() renderer {
 	return renderer{&strings.Builder{}}
 }
 
-func (r renderer) Render(d *gherkin.GherkinDocument) string {
+func (r renderer) Render(d *messages.GherkinDocument) string {
 	r.renderFeature(d.Feature)
 
 	return r.Builder.String()
 }
 
-func (r renderer) renderFeature(f *gherkin.Feature) {
+func (r renderer) renderFeature(f *messages.Feature) {
 	r.writeLine("# " + f.Name)
 	r.writeDescription(f.Description)
 
 	for _, x := range f.Children {
 		r.writeLine("")
 
-		switch x := x.(type) {
-		case *gherkin.Background:
-			r.renderBackground(x)
-		case *gherkin.Scenario:
-			r.renderScenario(x)
+		switch x := x.Value.(type) {
+		case *messages.FeatureChild_Background:
+			r.renderBackground(x.Background)
+		case *messages.FeatureChild_Scenario:
+			r.renderScenario(x.Scenario)
 		default:
 			panic("unreachable")
 		}
 	}
 }
 
-func (r renderer) renderBackground(b *gherkin.Background) {
+func (r renderer) renderBackground(b *messages.Background) {
 	r.writeLine("## Background (" + b.Name + ")")
 	r.writeDescription(b.Description)
 	r.renderSteps(b.Steps)
 }
 
-func (r renderer) renderScenario(s *gherkin.Scenario) {
+func (r renderer) renderScenario(s *messages.Scenario) {
 	r.writeLine("## " + s.Name)
 	r.writeDescription(s.Description)
 	r.renderSteps(s.Steps)
 }
 
-func (r renderer) renderSteps(ss []*gherkin.Step) {
+func (r renderer) renderSteps(ss []*messages.Step) {
 	for i, s := range ss {
 		r.writeLine("")
 		r.renderStep(s, i == len(ss)-1)
 	}
 }
 
-func (r renderer) renderDocString(d *gherkin.DocString) {
+func (r renderer) renderDocString(d *messages.DocString) {
 	r.writeLine("```")
 	r.writeLine(d.Content)
 	r.writeLine("```")
 }
 
-func (r renderer) renderStep(s *gherkin.Step, last bool) {
+func (r renderer) renderStep(s *messages.Step, last bool) {
 	if last && s.Argument == nil && s.Text[len(s.Text)-1] != '.' {
 		s.Text += "."
 	}
@@ -74,8 +74,8 @@ func (r renderer) renderStep(s *gherkin.Step, last bool) {
 		r.writeLine("")
 
 		switch x := s.Argument.(type) {
-		case *gherkin.DocString:
-			r.renderDocString(x)
+		case *messages.Step_DocString:
+			r.renderDocString(x.DocString)
 		default:
 			panic("unreachable")
 		}
