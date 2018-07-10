@@ -26,9 +26,8 @@ func convertFile(s string, w io.Writer) error {
 		return err
 	}
 
-	fmt.Fprint(w, newRenderer().Render(d))
-
-	return nil
+	_, err = fmt.Fprint(w, newRenderer().Render(d))
+	return err
 }
 
 func convertFiles(s, d string) error {
