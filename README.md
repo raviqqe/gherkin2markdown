@@ -30,22 +30,26 @@ gherkin2markdown <srcdir> <destdir>
 Given a file named `math.feature` with:
 
 ```gherkin
-Feature: Math
-  Scenario: Add 2 numbers
-    Given a file named "main.cloe" with:
+Feature: Python
+  Scenario: Hello, world!
+    Given a file named "main.py" with:
     """
-    (write (+ 2016 33))
+    print("Hello, world!")
     """
-    When I successfully run `cloe main.cloe`
-    Then the stdout should contain exactly "2049"
+    When I successfully run `python3 main.py`
+    Then the stdout should contain exactly "Hello, world!"
 
-  Scenario: Subtract a number from the other
-    Given a file named "main.cloe" with:
+  Scenario Outline: Add numbers
+    Given a file named "main.py" with:
     """
-    (write (- 2049 33))
+    print(<x> + <y>)
     """
-    When I successfully run `cloe main.cloe`
-    Then the stdout should contain exactly "2016"
+    When I successfully run `python3 main.py`
+    Then the stdout should contain exactly "<z>"
+    Examples:
+      | x | y | z |
+      | 1 | 2 | 3 |
+      | 4 | 5 | 9 |
 ```
 
 When I successfully run `gherkin2markdown math.feature`
@@ -53,31 +57,38 @@ When I successfully run `gherkin2markdown math.feature`
 Then the stdout should contain exactly:
 
 ````markdown
-# Math
+# Python
 
-## Add 2 numbers
+## Hello, world!
 
-_Given_ a file named "main.cloe" with:
-
-```
-(write (+ 2016 33))
-```
-
-_When_ I successfully run `cloe main.cloe`
-
-_Then_ the stdout should contain exactly "2049".
-
-## Subtract a number from the other
-
-_Given_ a file named "main.cloe" with:
+_Given_ a file named "main.py" with:
 
 ```
-(write (- 2049 33))
+print("Hello, world!")
 ```
 
-_When_ I successfully run `cloe main.cloe`
+_When_ I successfully run `python3 main.py`
 
-_Then_ the stdout should contain exactly "2016".
+_Then_ the stdout should contain exactly "Hello, world!".
+
+## Add numbers
+
+_Given_ a file named "main.py" with:
+
+```
+print(<x> + <y>)
+```
+
+_When_ I successfully run `python3 main.py`
+
+_Then_ the stdout should contain exactly "<z>".
+
+### Examples
+
+| x | y | z |
+|---|---|---|
+| 1 | 2 | 3 |
+| 4 | 5 | 9 |
 ````
 
 ## License
