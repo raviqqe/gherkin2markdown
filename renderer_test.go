@@ -81,6 +81,107 @@ Feature: Foo
 
 _When_ I do something.`,
 		},
+		{`
+Feature: Foo
+  Scenario Outline: Bar
+    When <someone> does <something>.
+    Examples:
+      | someone | something |
+      | I       | cooking   |
+      | You     | coding    |`, `
+# Foo
+
+## Bar
+
+_When_ <someone> does <something>.
+
+### Examples
+
+| someone | something |
+|---------|-----------|
+| I       | cooking   |
+| You     | coding    |`},
+		{`
+Feature: Foo
+  Scenario Outline: Bar
+    When <someone> does <something>.
+    Examples: Baz
+      | someone | something |
+      | I       | cooking   |
+      | You     | coding    |`, `
+# Foo
+
+## Bar
+
+_When_ <someone> does <something>.
+
+### Examples
+
+#### Baz
+
+| someone | something |
+|---------|-----------|
+| I       | cooking   |
+| You     | coding    |`},
+		{`
+Feature: Foo
+  Scenario Outline: Bar
+    When <someone> does <something>.
+    Examples: Baz
+      foo bar baz.
+
+      | someone | something |
+      | I       | cooking   |
+      | You     | coding    |`, `
+# Foo
+
+## Bar
+
+_When_ <someone> does <something>.
+
+### Examples
+
+#### Baz
+
+foo bar baz.
+
+| someone | something |
+|---------|-----------|
+| I       | cooking   |
+| You     | coding    |`},
+		{`
+Feature: Foo
+  Scenario Outline: Bar
+    When <someone> does <something>.
+    Examples: Baz
+      | someone |
+      | I       |
+      | You     |
+    Examples: Blah
+      | something |
+      | cooking   |
+      | coding    |`, `
+# Foo
+
+## Bar
+
+_When_ <someone> does <something>.
+
+### Examples
+
+#### Baz
+
+| someone |
+|---------|
+| I       |
+| You     |
+
+#### Blah
+
+| something |
+|-----------|
+| cooking   |
+| coding    |`},
 	} {
 		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]))
 

@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	messages "github.com/cucumber/cucumber-messages-go"
+	"github.com/willf/pad/utf8"
 )
 
 type renderer struct {
@@ -48,6 +49,11 @@ func (r renderer) renderScenario(s *messages.Scenario) {
 	r.writeLine("## " + s.Name)
 	r.writeDescription(s.Description)
 	r.renderSteps(s.Steps)
+
+	if len(s.Examples) != 0 {
+		r.writeLine("")
+		r.renderExamples(s.Examples)
+	}
 }
 
 func (r renderer) renderSteps(ss []*messages.Step) {
@@ -80,6 +86,58 @@ func (r renderer) renderStep(s *messages.Step, last bool) {
 			panic("unreachable")
 		}
 	}
+}
+
+func (r renderer) renderExamples(es []*messages.Examples) {
+	r.writeLine("### Examples")
+
+	for _, e := range es {
+		if e.Name != "" {
+			r.writeLine("")
+			r.writeLine("#### " + e.Name)
+		}
+
+		r.writeDescription(e.Description)
+
+		r.writeLine("")
+		r.renderTable(e.TableHeader, e.TableBody)
+	}
+}
+
+func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
+	ws := make([]int, len(h.Cells))
+
+	for _, r := range append([]*messages.TableRow{h}, rs...) {
+		for i, c := range r.Cells {
+			if w := len(c.Value); w > ws[i] {
+				ws[i] = w
+			}
+		}
+	}
+
+	r.renderCells(h.Cells, ws)
+
+	s := "|"
+
+	for _, w := range ws {
+		s += strings.Repeat("-", w+2) + "|"
+	}
+
+	r.writeLine(s)
+
+	for _, t := range rs {
+		r.renderCells(t.Cells, ws)
+	}
+}
+
+func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
+	s := "|"
+
+	for i, c := range cs {
+		s += " " + utf8.Right(c.Value, ws[i], " ") + " |"
+	}
+
+	r.writeLine(s)
 }
 
 func (r renderer) writeDescription(s string) {
