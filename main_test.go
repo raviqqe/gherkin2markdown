@@ -13,7 +13,8 @@ func TestCommand(t *testing.T) {
 	f, err := ioutil.TempFile("", "")
 	assert.Nil(t, err)
 
-	f.WriteString("Feature: Foo")
+	_, err = f.WriteString("Feature: Foo")
+	assert.Nil(t, err)
 
 	assert.Nil(t, command([]string{f.Name()}, ioutil.Discard))
 
