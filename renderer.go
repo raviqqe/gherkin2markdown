@@ -82,6 +82,8 @@ func (r renderer) renderStep(s *messages.Step, last bool) {
 		switch x := s.Argument.(type) {
 		case *messages.Step_DocString:
 			r.renderDocString(x.DocString)
+		case *messages.Step_DataTable:
+			r.renderDataTable(x.DataTable)
 		default:
 			panic("unreachable")
 		}
@@ -100,20 +102,12 @@ func (r renderer) renderExamples(es []*messages.Examples) {
 		r.writeDescription(e.Description)
 
 		r.writeLine("")
-		r.renderTable(e.TableHeader, e.TableBody)
+		r.renderExampleTable(e.TableHeader, e.TableBody)
 	}
 }
 
-func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
-	ws := make([]int, len(h.Cells))
-
-	for _, r := range append([]*messages.TableRow{h}, rs...) {
-		for i, c := range r.Cells {
-			if w := len(c.Value); w > ws[i] {
-				ws[i] = w
-			}
-		}
-	}
+func (r renderer) renderExampleTable(h *messages.TableRow, rs []*messages.TableRow) {
+	ws := r.getCellWidths(append([]*messages.TableRow{h}, rs...))
 
 	r.renderCells(h.Cells, ws)
 
@@ -130,6 +124,14 @@ func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
 	}
 }
 
+func (r renderer) renderDataTable(t *messages.DataTable) {
+	ws := r.getCellWidths(t.Rows)
+
+	for _, t := range t.Rows {
+		r.renderCells(t.Cells, ws)
+	}
+}
+
 func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	s := "|"
 
@@ -138,6 +140,20 @@ func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	}
 
 	r.writeLine(s)
+}
+
+func (renderer) getCellWidths(rs []*messages.TableRow) []int {
+	ws := make([]int, len(rs[0].Cells))
+
+	for _, r := range rs {
+		for i, c := range r.Cells {
+			if w := len(c.Value); w > ws[i] {
+				ws[i] = w
+			}
+		}
+	}
+
+	return ws
 }
 
 func (r renderer) writeDescription(s string) {

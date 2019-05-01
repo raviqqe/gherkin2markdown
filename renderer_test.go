@@ -83,6 +83,21 @@ _When_ I do something.`,
 		},
 		{`
 Feature: Foo
+  Background: Bar
+  Given Baz:
+    | foo |
+    | bar |`, `
+# Foo
+
+## Background (Bar)
+
+_Given_ Baz:
+
+| foo |
+| bar |`,
+		},
+		{`
+Feature: Foo
   Scenario Outline: Bar
     When <someone> does <something>.
     Examples:
