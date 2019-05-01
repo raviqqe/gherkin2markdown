@@ -10,13 +10,12 @@ jobs:
       - run:
           name: Dependencies
           command: |
-            go get -u github.com/alecthomas/gometalinter
-            gometalinter --install
+            go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
             go get -d -t ./...
 
       - run:
           name: Lint
-          command: gometalinter --disable gas --disable gocyclo --disable gosec --disable vetshadow
+          command: golangci-lint run
 
       - run:
           name: Build
