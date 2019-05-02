@@ -27,7 +27,7 @@ gherkin2markdown <srcdir> <destdir>
 
 ## Example
 
-Given a file named `math.feature` with:
+_Given_ a file named `math.feature` with:
 
 ```gherkin
 Feature: Python
@@ -52,9 +52,9 @@ Feature: Python
       | 4 | 5 | 9 |
 ```
 
-When I successfully run `gherkin2markdown math.feature`
+_When_ I successfully run `gherkin2markdown math.feature`
 
-Then the stdout should contain exactly:
+_Then_ the stdout should contain exactly:
 
 ````markdown
 # Python
