@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: golang
+    environment:
+      GO111MODULE: "on"
     working_directory: /go/src/github.com/raviqqe/gherkin2markdown
     steps:
       - checkout
