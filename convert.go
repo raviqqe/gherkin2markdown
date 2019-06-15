@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cucumber/gherkin-go"
+	gherkin "github.com/cucumber/gherkin-go"
 )
 
 const featureFileExtension = ".feature"

@@ -3,11 +3,9 @@ module github.com/raviqqe/gherkin2markdown
 go 1.12
 
 require (
-	github.com/cucumber/cucumber-messages-go/v2 v2.1.2
-	github.com/cucumber/gherkin-go v0.0.0-20190417233512-d05e8f3ab33e
+	github.com/cucumber/cucumber-messages-go/v3 v3.0.0
+	github.com/cucumber/gherkin-go v0.0.0-20190605210851-678357df2cd9
 	github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815
-	github.com/gogo/protobuf v1.2.1 // indirect
-	github.com/golang/protobuf v1.3.1 // indirect
 	github.com/kisielk/errcheck v1.2.0 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/stretchr/testify v1.3.0
