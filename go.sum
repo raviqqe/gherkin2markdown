@@ -16,6 +16,8 @@ github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/willf/pad v0.0.0-20190207183901-eccfe5d84172 h1:fXKBlHDmlnhSIrZos0W9Qwh/ISUdxUckckjHO//2G3c=
 github.com/willf/pad v0.0.0-20190207183901-eccfe5d84172/go.mod h1:+pVHwmjc9CH7ugBFxESIwQkXkVj0gUj4cFp63TLwP1Y=
+github.com/willf/pad v0.0.0-20200313202418-172aa767f2a4 h1:Y+IMUhhlO9FLTZpNrUAMWOr7Lh0tHDKu0nrDVhp6A7o=
+github.com/willf/pad v0.0.0-20200313202418-172aa767f2a4/go.mod h1:+pVHwmjc9CH7ugBFxESIwQkXkVj0gUj4cFp63TLwP1Y=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.2.2 h1:ZCJp+EgiOT7lHqUV2J862kp8Qj64Jo6az82+3Td9dZw=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
