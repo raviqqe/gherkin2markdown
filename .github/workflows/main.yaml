@@ -1,0 +1,14 @@
+name: main
+on:
+  - push
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    container:
+      image: golang
+    steps:
+      - uses: actions/checkout@main
+      - run: go build
+      - run: go run github.com/golangci/golangci-lint/cmd/golangci-lint run
+      - run: go test -covermode atomic -coverprofile coverage.txt
+      - uses: codecov/codecov-action@v1
