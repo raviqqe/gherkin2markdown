@@ -96,5 +96,17 @@ func openDestFile(p, s, d string) (*os.File, error) {
 		return nil, err
 	}
 
-	return os.OpenFile(p, os.O_CREATE|os.O_WRONLY, 0600)
+	f, err := os.OpenFile(p, os.O_CREATE|os.O_WRONLY, 0600)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = f.Truncate(0)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return f, nil
 }
