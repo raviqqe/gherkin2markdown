@@ -42,7 +42,13 @@ func (r renderer) renderFeature(f *gherkin.Feature) {
 }
 
 func (r renderer) renderBackground(b *gherkin.Background) {
-	r.writeLine("## Background (" + b.Name + ")")
+	s := "## Background"
+
+	if b.Name != "" {
+		s += " (" + b.Name + ")"
+	}
+
+	r.writeLine(s)
 	r.writeDescription(b.Description)
 	r.renderSteps(b.Steps)
 }
