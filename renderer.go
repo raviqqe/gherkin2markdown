@@ -80,7 +80,7 @@ func (r renderer) renderSteps(ss []*gherkin.Step) {
 }
 
 func (r renderer) renderDocString(d *gherkin.DocString) {
-	r.writeLine("```")
+	r.writeLine("```" + d.ContentType)
 	r.writeLine(d.Content)
 	r.writeLine("```")
 }

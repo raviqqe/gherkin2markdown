@@ -39,7 +39,7 @@ _Then_ something happens.`,
 Feature: Foo
   Scenario: Bar
     When I do something:
-    """
+    """sh
     foo
     """`, fmt.Sprintf(`
 # Foo
@@ -48,7 +48,7 @@ Feature: Foo
 
 _When_ I do something:
 
-%[1]s
+%[1]ssh
 foo
 %[1]s`, "```"),
 		},
