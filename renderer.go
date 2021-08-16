@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/cucumber/gherkin-go"
+	"github.com/cucumber/gherkin-go/v19"
 	"github.com/willf/pad/utf8"
 )
 

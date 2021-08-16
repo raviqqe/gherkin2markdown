@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	gherkin "github.com/cucumber/gherkin-go"
+	gherkin "github.com/cucumber/gherkin-go/v19"
 	"github.com/stretchr/testify/assert"
 )
 
