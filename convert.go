@@ -20,7 +20,7 @@ func convertFile(s string, w io.Writer) error {
 		return err
 	}
 
-	d, err := gherkin.ParseGherkinDocument(f)
+	d, err := gherkin.ParseGherkinDocument(f, func() string { return s })
 
 	if err != nil {
 		return err

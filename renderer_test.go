@@ -198,7 +198,7 @@ _When_ <someone> does <something>.
 | cooking   |
 | coding    |`},
 	} {
-		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]))
+		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]), func() string { return "" })
 
 		assert.Nil(t, err)
 		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", newRenderer().Render(d))

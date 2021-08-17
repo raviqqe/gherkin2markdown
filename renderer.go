@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/cucumber/gherkin-go/v19"
+	"github.com/cucumber/messages-go/v16"
 	"github.com/willf/pad/utf8"
 )
 
@@ -15,33 +15,32 @@ func newRenderer() renderer {
 	return renderer{&strings.Builder{}}
 }
 
-func (r renderer) Render(d *gherkin.GherkinDocument) string {
+func (r renderer) Render(d *messages.GherkinDocument) string {
 	r.renderFeature(d.Feature)
 
 	return r.Builder.String()
 }
 
-func (r renderer) renderFeature(f *gherkin.Feature) {
+func (r renderer) renderFeature(f *messages.Feature) {
 	r.writeLine("# " + f.Name)
 	r.writeDescription(f.Description)
 
-	for _, x := range f.Children {
+	for _, c := range f.Children {
 		r.writeLine("")
 
-		switch x := x.(type) {
-		case *gherkin.Background:
-			r.renderBackground(x)
-		case *gherkin.Scenario:
-			r.renderScenario(x)
-		case *gherkin.ScenarioOutline:
-			r.renderScenarioOutline(x)
-		default:
-			panic("unreachable")
+		// TODO Render rules.
+
+		if c.Background != nil {
+			r.renderBackground(c.Background)
+		}
+
+		if c.Scenario != nil {
+			r.renderScenario(c.Scenario)
 		}
 	}
 }
 
-func (r renderer) renderBackground(b *gherkin.Background) {
+func (r renderer) renderBackground(b *messages.Background) {
 	s := "## Background"
 
 	if b.Name != "" {
@@ -53,12 +52,10 @@ func (r renderer) renderBackground(b *gherkin.Background) {
 	r.renderSteps(b.Steps)
 }
 
-func (r renderer) renderScenario(s *gherkin.Scenario) {
-	r.renderScenarioDefinition(&s.ScenarioDefinition)
-}
-
-func (r renderer) renderScenarioOutline(s *gherkin.ScenarioOutline) {
-	r.renderScenarioDefinition(&s.ScenarioDefinition)
+func (r renderer) renderScenario(s *messages.Scenario) {
+	r.writeLine("## " + s.Name)
+	r.writeDescription(s.Description)
+	r.renderSteps(s.Steps)
 
 	if len(s.Examples) != 0 {
 		r.writeLine("")
@@ -66,47 +63,38 @@ func (r renderer) renderScenarioOutline(s *gherkin.ScenarioOutline) {
 	}
 }
 
-func (r renderer) renderScenarioDefinition(s *gherkin.ScenarioDefinition) {
-	r.writeLine("## " + s.Name)
-	r.writeDescription(s.Description)
-	r.renderSteps(s.Steps)
-}
-
-func (r renderer) renderSteps(ss []*gherkin.Step) {
+func (r renderer) renderSteps(ss []*messages.Step) {
 	for i, s := range ss {
 		r.writeLine("")
 		r.renderStep(s, i == len(ss)-1)
 	}
 }
 
-func (r renderer) renderDocString(d *gherkin.DocString) {
-	r.writeLine("```" + d.ContentType)
+func (r renderer) renderDocString(d *messages.DocString) {
+	r.writeLine("```" + d.MediaType)
 	r.writeLine(d.Content)
 	r.writeLine("```")
 }
 
-func (r renderer) renderStep(s *gherkin.Step, last bool) {
-	if last && s.Argument == nil && s.Text[len(s.Text)-1] != '.' {
+func (r renderer) renderStep(s *messages.Step, last bool) {
+	if last && s.DocString == nil && s.DataTable == nil && s.Text[len(s.Text)-1] != '.' {
 		s.Text += "."
 	}
 
 	r.writeLine("_" + strings.TrimSpace(s.Keyword) + "_ " + s.Text)
 
-	if s.Argument != nil {
+	if s.DocString != nil {
 		r.writeLine("")
+		r.renderDocString(s.DocString)
+	}
 
-		switch x := s.Argument.(type) {
-		case *gherkin.DocString:
-			r.renderDocString(x)
-		case *gherkin.DataTable:
-			r.renderDataTable(x)
-		default:
-			panic("unreachable")
-		}
+	if s.DataTable != nil {
+		r.writeLine("")
+		r.renderDataTable(s.DataTable)
 	}
 }
 
-func (r renderer) renderExamples(es []*gherkin.Examples) {
+func (r renderer) renderExamples(es []*messages.Examples) {
 	r.writeLine("### Examples")
 
 	for _, e := range es {
@@ -122,8 +110,8 @@ func (r renderer) renderExamples(es []*gherkin.Examples) {
 	}
 }
 
-func (r renderer) renderExampleTable(h *gherkin.TableRow, rs []*gherkin.TableRow) {
-	ws := r.getCellWidths(append([]*gherkin.TableRow{h}, rs...))
+func (r renderer) renderExampleTable(h *messages.TableRow, rs []*messages.TableRow) {
+	ws := r.getCellWidths(append([]*messages.TableRow{h}, rs...))
 
 	r.renderCells(h.Cells, ws)
 
@@ -140,7 +128,7 @@ func (r renderer) renderExampleTable(h *gherkin.TableRow, rs []*gherkin.TableRow
 	}
 }
 
-func (r renderer) renderDataTable(t *gherkin.DataTable) {
+func (r renderer) renderDataTable(t *messages.DataTable) {
 	ws := r.getCellWidths(t.Rows)
 
 	for _, t := range t.Rows {
@@ -148,7 +136,7 @@ func (r renderer) renderDataTable(t *gherkin.DataTable) {
 	}
 }
 
-func (r renderer) renderCells(cs []*gherkin.TableCell, ws []int) {
+func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	s := "|"
 
 	for i, c := range cs {
@@ -158,7 +146,7 @@ func (r renderer) renderCells(cs []*gherkin.TableCell, ws []int) {
 	r.writeLine(s)
 }
 
-func (renderer) getCellWidths(rs []*gherkin.TableRow) []int {
+func (renderer) getCellWidths(rs []*messages.TableRow) []int {
 	ws := make([]int, len(rs[0].Cells))
 
 	for _, r := range rs {
