@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cucumber/gherkin-go"
+	"github.com/cucumber/gherkin-go/v19"
 )
 
 const featureFileExtension = ".feature"
@@ -20,7 +20,7 @@ func convertFile(s string, w io.Writer) error {
 		return err
 	}
 
-	d, err := gherkin.ParseGherkinDocument(f)
+	d, err := gherkin.ParseGherkinDocument(f, func() string { return s })
 
 	if err != nil {
 		return err
