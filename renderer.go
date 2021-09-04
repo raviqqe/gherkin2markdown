@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/cucumber/messages-go/v16"
@@ -23,6 +24,11 @@ func (r renderer) Render(d *messages.GherkinDocument) string {
 }
 
 func (r renderer) renderFeature(f *messages.Feature) {
+	r.writeLine(fmt.Sprintf(`---
+layout: default
+title: %s
+parent: Features
+---`,f.Name))
 	r.writeLine("# " + f.Name)
 	r.writeDescription(f.Description)
 

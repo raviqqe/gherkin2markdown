@@ -21,7 +21,13 @@ func TestRendererRender(t *testing.T) {
 	}{
 		{
 			"Feature: Foo",
-			"# Foo\n",
+			`
+---
+layout: default
+title: Foo
+parent: Features
+---
+# Foo`,
 		},
 		{`
 Feature: Foo
@@ -29,6 +35,11 @@ Feature: Foo
     Given that
     When I do something
     Then something happens`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Scenarios
@@ -46,6 +57,11 @@ Feature: Foo
     """sh
     foo
     """`, fmt.Sprintf(`
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Scenarios
@@ -62,6 +78,11 @@ foo
 Feature: Foo
 
   bar`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 bar`,
@@ -71,6 +92,11 @@ Feature: Foo
   Scenario: Bar
 
     baz`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Scenarios
@@ -84,6 +110,11 @@ baz`,
 Feature: Foo
   Background: Bar
     When I do something`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Background (Bar)
@@ -96,6 +127,11 @@ Feature: Foo
   Given Baz:
     | foo |
     | bar |`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Background (Bar)
@@ -114,6 +150,11 @@ Feature: Foo
       | someone | something |
       | I       | cooking   |
       | You     | coding    |`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Scenarios
@@ -136,6 +177,11 @@ Feature: Foo
       | someone | something |
       | I       | cooking   |
       | You     | coding    |`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Scenarios
@@ -162,6 +208,11 @@ Feature: Foo
       | someone | something |
       | I       | cooking   |
       | You     | coding    |`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Scenarios
@@ -192,6 +243,11 @@ Feature: Foo
       | something |
       | cooking   |
       | coding    |`, `
+---
+layout: default
+title: Foo
+parent: Features
+---
 # Foo
 
 ## Scenarios
