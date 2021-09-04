@@ -29,11 +29,11 @@ Feature: Foo
 
 ## Bar
 
-_Given_ that
+**Given** that
 
-_When_ I do something
+**When** I do something
 
-_Then_ something happens.`,
+**Then** something happens.`,
 		},
 		{`
 Feature: Foo
@@ -46,7 +46,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ I do something:
+**When** I do something:
 
 %[1]ssh
 foo
@@ -79,7 +79,7 @@ Feature: Foo
 
 ## Background (Bar)
 
-_When_ I do something.`,
+**When** I do something.`,
 		},
 		{`
 Feature: Foo
@@ -91,7 +91,7 @@ Feature: Foo
 
 ## Background (Bar)
 
-_Given_ Baz:
+**Given** Baz:
 
 | foo |
 | bar |`,
@@ -108,7 +108,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ <someone> does <something>.
+**When** <someone> does <something>.
 
 ### Examples
 
@@ -128,7 +128,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ <someone> does <something>.
+**When** <someone> does <something>.
 
 ### Examples
 
@@ -152,7 +152,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ <someone> does <something>.
+**When** <someone> does <something>.
 
 ### Examples
 
@@ -180,7 +180,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ <someone> does <something>.
+**When** <someone> does <something>.
 
 ### Examples
 
