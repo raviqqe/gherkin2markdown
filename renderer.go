@@ -131,7 +131,17 @@ func (r renderer) renderExampleTable(h *messages.TableRow, rs []*messages.TableR
 func (r renderer) renderDataTable(t *messages.DataTable) {
 	ws := r.getCellWidths(t.Rows)
 
-	for _, t := range t.Rows {
+	r.renderCells(t.Rows[0].Cells, ws)
+
+	s := "|:"
+
+	for _, w := range ws {
+		s += strings.Repeat("-", w+1) + "|"
+	}
+
+	r.writeLine(s)
+
+	for _, t := range t.Rows[1:] {
 		r.renderCells(t.Cells, ws)
 	}
 }
