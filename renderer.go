@@ -9,10 +9,11 @@ import (
 
 type renderer struct {
 	*strings.Builder
+	scenarioHeaderWritten bool
 }
 
 func newRenderer() renderer {
-	return renderer{&strings.Builder{}}
+	return renderer{Builder: &strings.Builder{}}
 }
 
 func (r renderer) Render(d *messages.GherkinDocument) string {
@@ -46,15 +47,24 @@ func (r renderer) renderBackground(b *messages.Background) {
 	if b.Name != "" {
 		s += " (" + b.Name + ")"
 	}
-
 	r.writeLine(s)
+	r.writeLine("")
 	r.writeDescription(b.Description)
 	r.renderSteps(b.Steps)
 }
 
 func (r renderer) renderScenario(s *messages.Scenario) {
-	r.writeLine("## " + s.Name)
-	r.writeDescription(s.Description)
+	if !r.scenarioHeaderWritten && s.Name != "" {
+		r.writeLine("## Scenarios")
+		r.writeLine("")
+		r.scenarioHeaderWritten = true
+	}
+	r.writeLine("### " + s.Name)
+	r.writeLine("")
+	if s.Description != "" {
+		r.writeDescription(s.Description)
+		r.writeLine("")
+	}
 	r.renderSteps(s.Steps)
 
 	if len(s.Examples) != 0 {
@@ -65,7 +75,6 @@ func (r renderer) renderScenario(s *messages.Scenario) {
 
 func (r renderer) renderSteps(ss []*messages.Step) {
 	for i, s := range ss {
-		r.writeLine("")
 		r.renderStep(s, i == len(ss)-1)
 	}
 }

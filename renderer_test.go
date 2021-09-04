@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
 
 	gherkin "github.com/cucumber/gherkin-go/v19"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestNewRenderer(t *testing.T) {
@@ -14,7 +14,11 @@ func TestNewRenderer(t *testing.T) {
 }
 
 func TestRendererRender(t *testing.T) {
-	for _, ss := range [][2]string{
+
+	testTable:= []struct {
+		Input string
+		Expected string
+	}{
 		{
 			"Feature: Foo",
 			"# Foo\n",
@@ -27,12 +31,12 @@ Feature: Foo
     Then something happens`, `
 # Foo
 
-## Bar
+## Scenarios
+
+### Bar
 
 **Given** that
-
 **When** I do something
-
 **Then** something happens.`,
 		},
 		{`
@@ -44,7 +48,9 @@ Feature: Foo
     """`, fmt.Sprintf(`
 # Foo
 
-## Bar
+## Scenarios
+
+### Bar
 
 **When** I do something:
 
@@ -67,7 +73,10 @@ Feature: Foo
     baz`, `
 # Foo
 
-## Bar
+## Scenarios
+
+### Bar
+
 
 baz`,
 		},
@@ -107,7 +116,9 @@ Feature: Foo
       | You     | coding    |`, `
 # Foo
 
-## Bar
+## Scenarios
+
+### Bar
 
 **When** <someone> does <something>.
 
@@ -127,7 +138,9 @@ Feature: Foo
       | You     | coding    |`, `
 # Foo
 
-## Bar
+## Scenarios
+
+### Bar
 
 **When** <someone> does <something>.
 
@@ -151,7 +164,9 @@ Feature: Foo
       | You     | coding    |`, `
 # Foo
 
-## Bar
+## Scenarios
+
+### Bar
 
 **When** <someone> does <something>.
 
@@ -179,7 +194,9 @@ Feature: Foo
       | coding    |`, `
 # Foo
 
-## Bar
+## Scenarios
+
+### Bar
 
 **When** <someone> does <something>.
 
@@ -198,10 +215,14 @@ Feature: Foo
 |-----------|
 | cooking   |
 | coding    |`},
-	} {
-		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]), func() string { return "" })
+	}
 
-		assert.Nil(t, err)
-		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", newRenderer().Render(d))
+	for i, ss := range testTable {
+		t.Run(fmt.Sprintf("Render test %d",i), func(t *testing.T) {
+			d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss.Input), func() string { return "" })
+
+			assert.Nil(t, err)
+			assert.Equal(t, strings.TrimSpace(ss.Expected), strings.TrimSpace(newRenderer().Render(d)))
+		})
 	}
 }
