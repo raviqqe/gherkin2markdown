@@ -81,7 +81,7 @@ func (r renderer) renderStep(s *messages.Step, last bool) {
 		s.Text += "."
 	}
 
-	r.writeLine("_" + strings.TrimSpace(s.Keyword) + "_ " + s.Text)
+	r.writeLine("**" + strings.TrimSpace(s.Keyword) + "** " + s.Text)
 
 	if s.DocString != nil {
 		r.writeLine("")
