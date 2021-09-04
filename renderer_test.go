@@ -94,6 +94,7 @@ Feature: Foo
 **Given** Baz:
 
 | foo |
+|:----|
 | bar |`,
 		},
 		{`
