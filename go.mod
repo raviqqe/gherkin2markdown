@@ -1,6 +1,6 @@
-module github.com/raviqqe/gherkin2markdown
+module github.com/wepala/gherkin2markdown
 
-go 1.13
+go 1.16
 
 require (
 	github.com/cucumber/gherkin-go/v19 v19.0.3
