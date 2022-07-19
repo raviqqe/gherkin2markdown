@@ -1,4 +1,4 @@
-module github.com/raviqqe/gherkin2markdown
+module github.com/ryanchristo/gherkin2markdown
 
 go 1.13
 
