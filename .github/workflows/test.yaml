@@ -1,13 +1,11 @@
-name: main
+name: test
 on:
   - push
 jobs:
-  main:
+  test:
     runs-on: ubuntu-latest
-    container:
-      image: golang
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v3
       - run: go build
       - uses: golangci/golangci-lint-action@v3
       - run: go test -covermode atomic -coverprofile coverage.txt
