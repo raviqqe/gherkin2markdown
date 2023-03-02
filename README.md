@@ -1,6 +1,6 @@
 # gherkin2markdown
 
-[![GitHub Action](https://img.shields.io/github/actions/workflow/status/raviqqe/gherkin2markdown/main.yaml?branch=main&style=flat-square)](https://github.com/raviqqe/gherkin2markdown/actions)
+[![GitHub Action](https://img.shields.io/github/actions/workflow/status/raviqqe/gherkin2markdown/test.yaml?branch=main&style=flat-square)](https://github.com/raviqqe/gherkin2markdown/actions)
 [![Codecov](https://img.shields.io/codecov/c/github/raviqqe/gherkin2markdown.svg?style=flat-square)](https://codecov.io/gh/raviqqe/gherkin2markdown)
 [![Go Report Card](https://goreportcard.com/badge/github.com/raviqqe/gherkin2markdown?style=flat-square)](https://goreportcard.com/report/github.com/raviqqe/gherkin2markdown)
 [![License](https://img.shields.io/github/license/raviqqe/gherkin2markdown.svg?style=flat-square)](LICENSE)
