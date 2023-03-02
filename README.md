@@ -10,7 +10,7 @@ A command to convert Gherkin files into Markdown.
 ## Installation
 
 ```
-go get -u github.com/raviqqe/gherkin2markdown
+go install github.com/raviqqe/gherkin2markdown@latest
 ```
 
 ## Usage
