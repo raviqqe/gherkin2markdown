@@ -198,9 +198,9 @@ _When_ <someone> does <something>.
 | cooking   |
 | coding    |`}, {`
 Feature: Foo
-	Rule: Bar
-		Example: Baz
-			When qux
+  Rule: Bar
+    Example: Baz
+      When qux
 `, `
 # Foo
 
