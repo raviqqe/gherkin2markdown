@@ -9,20 +9,25 @@ import (
 
 type renderer struct {
 	*strings.Builder
+	depth int
 }
 
-func newRenderer() renderer {
-	return renderer{&strings.Builder{}}
+func newRenderer() *renderer {
+	return &renderer{&strings.Builder{}, 0}
 }
 
-func (r renderer) Render(d *messages.GherkinDocument) string {
+func (r *renderer) Render(d *messages.GherkinDocument) string {
 	r.renderFeature(d.Feature)
 
 	return r.Builder.String()
 }
 
-func (r renderer) renderFeature(f *messages.Feature) {
-	r.writeLine("# " + f.Name)
+func (r *renderer) renderFeature(f *messages.Feature) {
+	r.writeHeadline(f.Name)
+
+	r.depth++
+	defer func() { r.depth-- }()
+
 	r.writeDescription(f.Description)
 
 	for _, c := range f.Children {
@@ -42,20 +47,28 @@ func (r renderer) renderFeature(f *messages.Feature) {
 	}
 }
 
-func (r renderer) renderBackground(b *messages.Background) {
-	s := "## Background"
+func (r *renderer) renderBackground(b *messages.Background) {
+	s := "Background"
 
 	if b.Name != "" {
 		s += " (" + b.Name + ")"
 	}
 
-	r.writeLine(s)
+	r.writeHeadline(s)
+
+	r.depth++
+	defer func() { r.depth-- }()
+
 	r.writeDescription(b.Description)
 	r.renderSteps(b.Steps)
 }
 
-func (r renderer) renderScenario(s *messages.Scenario) {
-	r.writeLine("## " + s.Name)
+func (r *renderer) renderScenario(s *messages.Scenario) {
+	r.writeHeadline(s.Name)
+
+	r.depth++
+	defer func() { r.depth-- }()
+
 	r.writeDescription(s.Description)
 	r.renderSteps(s.Steps)
 
@@ -65,8 +78,12 @@ func (r renderer) renderScenario(s *messages.Scenario) {
 	}
 }
 
-func (r renderer) renderRule(l *messages.Rule) {
-	r.writeLine("## " + l.Name)
+func (r *renderer) renderRule(l *messages.Rule) {
+	r.writeHeadline(l.Name)
+
+	r.depth++
+	defer func() { r.depth-- }()
+
 	r.writeDescription(l.Description)
 
 	for _, c := range l.Children {
@@ -82,20 +99,20 @@ func (r renderer) renderRule(l *messages.Rule) {
 	}
 }
 
-func (r renderer) renderSteps(ss []*messages.Step) {
+func (r *renderer) renderSteps(ss []*messages.Step) {
 	for i, s := range ss {
 		r.writeLine("")
 		r.renderStep(s, i == len(ss)-1)
 	}
 }
 
-func (r renderer) renderDocString(d *messages.DocString) {
+func (r *renderer) renderDocString(d *messages.DocString) {
 	r.writeLine("```" + d.MediaType)
 	r.writeLine(d.Content)
 	r.writeLine("```")
 }
 
-func (r renderer) renderStep(s *messages.Step, last bool) {
+func (r *renderer) renderStep(s *messages.Step, last bool) {
 	if last && s.DocString == nil && s.DataTable == nil && s.Text[len(s.Text)-1] != '.' {
 		s.Text += "."
 	}
@@ -113,13 +130,16 @@ func (r renderer) renderStep(s *messages.Step, last bool) {
 	}
 }
 
-func (r renderer) renderExamples(es []*messages.Examples) {
-	r.writeLine("### Examples")
+func (r *renderer) renderExamples(es []*messages.Examples) {
+	r.writeHeadline("Examples")
+
+	r.depth++
+	defer func() { r.depth-- }()
 
 	for _, e := range es {
 		if e.Name != "" {
 			r.writeLine("")
-			r.writeLine("#### " + e.Name)
+			r.writeHeadline(e.Name)
 		}
 
 		r.writeDescription(e.Description)
@@ -179,11 +199,15 @@ func (renderer) getCellWidths(rs []*messages.TableRow) []int {
 	return ws
 }
 
-func (r renderer) writeDescription(s string) {
+func (r *renderer) writeDescription(s string) {
 	if s != "" {
 		r.writeLine("")
 		r.writeLine(strings.TrimSpace(s))
 	}
+}
+
+func (r *renderer) writeHeadline(s string) {
+	r.writeLine(strings.Repeat("#", r.depth+1) + " " + s)
 }
 
 func (r renderer) writeLine(s string) {
