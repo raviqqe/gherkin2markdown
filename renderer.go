@@ -199,14 +199,14 @@ func (renderer) getCellWidths(rs []*messages.TableRow) []int {
 	return ws
 }
 
-func (r *renderer) writeDescription(s string) {
+func (r renderer) writeDescription(s string) {
 	if s != "" {
 		r.writeLine("")
 		r.writeLine(strings.TrimSpace(s))
 	}
 }
 
-func (r *renderer) writeHeadline(s string) {
+func (r renderer) writeHeadline(s string) {
 	r.writeLine(strings.Repeat("#", r.depth+1) + " " + s)
 }
 
