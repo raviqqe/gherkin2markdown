@@ -65,14 +65,20 @@ func (r renderer) renderScenario(s *messages.Scenario) {
 	}
 }
 
-func (r renderer) renderRule(s *messages.Rule) {
-	r.writeLine("## " + s.Name)
-	r.writeDescription(s.Description)
-	r.renderSteps(s.Steps)
+func (r renderer) renderRule(l *messages.Rule) {
+	r.writeLine("## " + l.Name)
+	r.writeDescription(l.Description)
 
-	if len(s.Examples) != 0 {
+	for _, c := range l.Children {
 		r.writeLine("")
-		r.renderExamples(s.Examples)
+
+		if c.Background != nil {
+			r.renderBackground(c.Background)
+		}
+
+		if c.Scenario != nil {
+			r.renderScenario(c.Scenario)
+		}
 	}
 }
 
