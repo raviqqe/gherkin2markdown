@@ -28,14 +28,16 @@ func (r renderer) renderFeature(f *messages.Feature) {
 	for _, c := range f.Children {
 		r.writeLine("")
 
-		// TODO Render rules.
-
 		if c.Background != nil {
 			r.renderBackground(c.Background)
 		}
 
 		if c.Scenario != nil {
 			r.renderScenario(c.Scenario)
+		}
+
+		if c.Rule != nil {
+			r.renderRule(c.Rule)
 		}
 	}
 }
@@ -53,6 +55,17 @@ func (r renderer) renderBackground(b *messages.Background) {
 }
 
 func (r renderer) renderScenario(s *messages.Scenario) {
+	r.writeLine("## " + s.Name)
+	r.writeDescription(s.Description)
+	r.renderSteps(s.Steps)
+
+	if len(s.Examples) != 0 {
+		r.writeLine("")
+		r.renderExamples(s.Examples)
+	}
+}
+
+func (r renderer) renderRule(s *messages.Rule) {
 	r.writeLine("## " + s.Name)
 	r.writeDescription(s.Description)
 	r.renderSteps(s.Steps)
