@@ -196,7 +196,20 @@ _When_ <someone> does <something>.
 | something |
 |-----------|
 | cooking   |
-| coding    |`},
+| coding    |`}, {`
+Feature: Foo
+  Rule: Bar
+    Example: Baz
+      When qux
+`, `
+# Foo
+
+## Bar
+
+### Baz
+
+_When_ qux.
+`},
 	} {
 		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]), func() string { return "" })
 
