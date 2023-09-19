@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/cucumber/messages-go/v16"
+	"github.com/cucumber/messages/go/v22"
 	"github.com/willf/pad/utf8"
 )
 
