@@ -33,7 +33,7 @@ _Given_ a file named `math.feature` with:
 Feature: Python
   Scenario: Hello, world!
     Given a file named "main.py" with:
-    """
+    """python
     print("Hello, world!")
     """
     When I successfully run `python3 main.py`
@@ -41,11 +41,12 @@ Feature: Python
 
   Scenario Outline: Add numbers
     Given a file named "main.py" with:
-    """
+    """python
     print(<x> + <y>)
     """
     When I successfully run `python3 main.py`
     Then the stdout should contain exactly "<z>"
+
     Examples:
       | x | y | z |
       | 1 | 2 | 3 |
@@ -63,7 +64,7 @@ _Then_ the stdout should contain exactly:
 
 _Given_ a file named "main.py" with:
 
-```
+```python
 print("Hello, world!")
 ```
 
@@ -75,7 +76,7 @@ _Then_ the stdout should contain exactly "Hello, world!".
 
 _Given_ a file named "main.py" with:
 
-```
+```python
 print(<x> + <y>)
 ```
 
