@@ -22,8 +22,8 @@ func Run(ss []string, w io.Writer) error {
 	if err != nil {
 		return err
 	} else if args.File == "" {
-		return convertFiles(args.SrcDir, args.DestDir)
+		return ConvertFiles(args.SrcDir, args.DestDir)
 	}
 
-	return convertFile(args.File, w)
+	return ConvertFile(args.File, w)
 }
