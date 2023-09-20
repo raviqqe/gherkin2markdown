@@ -19,20 +19,18 @@ type arguments struct {
 	DestDir string `docopt:"<destdir>"`
 }
 
-func getArguments(ss []string) arguments {
+func getArguments(ss []string) (arguments, error) {
 	args := arguments{}
-	parseArguments(usage, ss, &args)
-	return args
+	err := parseArguments(usage, ss, &args)
+	return args, err
 }
 
-func parseArguments(u string, ss []string, args interface{}) {
+func parseArguments(u string, ss []string, args interface{}) error {
 	opts, err := docopt.ParseArgs(u, ss, "0.1.0")
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	if err := opts.Bind(args); err != nil {
-		panic(err)
-	}
+	return opts.Bind(args)
 }
