@@ -1,4 +1,4 @@
-package main
+package main_test
 
 import (
 	"fmt"
@@ -6,11 +6,12 @@ import (
 	"testing"
 
 	"github.com/cucumber/gherkin/go/v27"
+	"github.com/raviqqe/gherkin2markdown"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewRenderer(t *testing.T) {
-	newRenderer()
+	main.NewRenderer()
 }
 
 func TestRendererRender(t *testing.T) {
@@ -214,6 +215,6 @@ _When_ qux.
 		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]), func() string { return "" })
 
 		assert.Nil(t, err)
-		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", newRenderer().Render(d))
+		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", main.NewRenderer().Render(d))
 	}
 }

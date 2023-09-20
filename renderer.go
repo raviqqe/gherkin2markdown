@@ -12,7 +12,7 @@ type renderer struct {
 	depth int
 }
 
-func newRenderer() *renderer {
+func NewRenderer() *renderer {
 	return &renderer{&strings.Builder{}, 0}
 }
 
