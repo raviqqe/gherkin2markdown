@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	if err := command(os.Args[1:], os.Stdout); err != nil {
+	if err := Run(os.Args[1:], os.Stdout); err != nil {
 		if _, err := fmt.Fprintln(os.Stderr, err); err != nil {
 			panic(err)
 		}
@@ -16,7 +16,7 @@ func main() {
 	}
 }
 
-func command(ss []string, w io.Writer) error {
+func Run(ss []string, w io.Writer) error {
 	args, err := GetArguments(ss)
 
 	if err != nil {
