@@ -13,26 +13,24 @@ Usage:
 Options:
 	-h, --help  Show this help.`
 
-type arguments struct {
+type Arguments struct {
 	File    string `docopt:"<file>"`
 	SrcDir  string `docopt:"<srcdir>"`
 	DestDir string `docopt:"<destdir>"`
 }
 
-func getArguments(ss []string) arguments {
-	args := arguments{}
-	parseArguments(usage, ss, &args)
-	return args
+func GetArguments(ss []string) (Arguments, error) {
+	args := Arguments{}
+	err := parseArguments(usage, ss, &args)
+	return args, err
 }
 
-func parseArguments(u string, ss []string, args interface{}) {
-	opts, err := docopt.ParseArgs(u, ss, "0.1.0")
+func parseArguments(u string, ss []string, args interface{}) error {
+	opts, err := docopt.ParseArgs(u, ss, "")
 
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	if err := opts.Bind(args); err != nil {
-		panic(err)
-	}
+	return opts.Bind(args)
 }

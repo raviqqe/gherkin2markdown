@@ -13,7 +13,7 @@ import (
 
 const featureFileExtension = ".feature"
 
-func convertFile(s string, w io.Writer) error {
+func ConvertFile(s string, w io.Writer) error {
 	f, err := os.Open(s)
 
 	if err != nil {
@@ -26,11 +26,11 @@ func convertFile(s string, w io.Writer) error {
 		return err
 	}
 
-	_, err = fmt.Fprint(w, newRenderer().Render(d))
+	_, err = fmt.Fprint(w, NewRenderer().Render(d))
 	return err
 }
 
-func convertFiles(s, d string) error {
+func ConvertFiles(s, d string) error {
 	ps := []string{}
 
 	err := filepath.Walk(s, func(p string, i os.FileInfo, err error) error {
@@ -65,7 +65,7 @@ func convertFiles(s, d string) error {
 				return
 			}
 
-			err = convertFile(p, f)
+			err = ConvertFile(p, f)
 
 			if err != nil {
 				es <- err

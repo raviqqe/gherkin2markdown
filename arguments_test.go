@@ -1,29 +1,23 @@
-package main
+package main_test
 
 import (
 	"testing"
 
+	"github.com/raviqqe/gherkin2markdown"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetArguments(t *testing.T) {
 	for _, c := range []struct {
 		parameters []string
-		arguments
+		arguments  main.Arguments
 	}{
-		{[]string{"file"}, arguments{File: "file"}},
-		{[]string{"dir1", "dir2"}, arguments{SrcDir: "dir1", DestDir: "dir2"}},
+		{[]string{"file"}, main.Arguments{File: "file"}},
+		{[]string{"dir1", "dir2"}, main.Arguments{SrcDir: "dir1", DestDir: "dir2"}},
 	} {
-		assert.Equal(t, c.arguments, getArguments(c.parameters))
+		args, err := main.GetArguments(c.parameters)
+
+		assert.Nil(t, err)
+		assert.Equal(t, c.arguments, args)
 	}
-}
-
-func TestParseArgumentsPanic(t *testing.T) {
-	assert.Panics(t, func() {
-		parseArguments("", []string{"file"}, &arguments{})
-	})
-
-	assert.Panics(t, func() {
-		parseArguments(usage, []string{"file"}, arguments{})
-	})
 }
