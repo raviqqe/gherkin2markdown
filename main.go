@@ -17,9 +17,11 @@ func main() {
 }
 
 func command(ss []string, w io.Writer) error {
-	args := getArguments(ss)
+	args, err := GetArguments(ss)
 
-	if args.File == "" {
+	if err != nil {
+		return err
+	} else if args.File == "" {
 		return convertFiles(args.SrcDir, args.DestDir)
 	}
 
