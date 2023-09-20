@@ -10,7 +10,7 @@ import (
 )
 
 func TestConvertFile(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
+	f, err := os.CreateTemp("", "")
 	assert.Nil(t, err)
 	defer os.Remove(f.Name())
 
@@ -21,7 +21,7 @@ func TestConvertFile(t *testing.T) {
 }
 
 func TestConvertFileError(t *testing.T) {
-	f, err := ioutil.TempFile("", "")
+	f, err := os.CreateTemp("", "")
 	assert.Nil(t, err)
 	defer os.Remove(f.Name())
 
@@ -32,7 +32,7 @@ func TestConvertFileError(t *testing.T) {
 }
 
 func TestConvertFilesWithNonReadableSourceDir(t *testing.T) {
-	d, err := ioutil.TempDir("", "")
+	d, err := os.MkdirTemp("", "")
 	assert.Nil(t, err)
 	defer os.RemoveAll(d)
 
