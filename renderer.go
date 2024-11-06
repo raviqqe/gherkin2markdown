@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/cucumber/messages/go/v22"
+	messages "github.com/cucumber/messages/go/v22"
 	"github.com/willf/pad/utf8"
 )
 
@@ -117,7 +117,9 @@ func (r *renderer) renderStep(s *messages.Step, last bool) {
 		s.Text += "."
 	}
 
-	r.writeLine("_" + strings.TrimSpace(s.Keyword) + "_ " + s.Text)
+	text := strings.ReplaceAll(s.Text, "<", `\<`)
+
+	r.writeLine("_" + strings.TrimSpace(s.Keyword) + "_ " + text)
 
 	if s.DocString != nil {
 		r.writeLine("")
