@@ -82,7 +82,7 @@ print(<x> + <y>)
 
 _When_ I successfully run `python3 main.py`
 
-_Then_ the stdout should contain exactly "<z>".
+_Then_ the stdout should contain exactly "\<z\>".
 
 ### Examples
 
