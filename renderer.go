@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	messages "github.com/cucumber/messages/go/v22"
+	"github.com/cucumber/messages/go/v22"
 	"github.com/willf/pad/utf8"
 )
 
@@ -118,6 +118,7 @@ func (r *renderer) renderStep(s *messages.Step, last bool) {
 	}
 
 	text := strings.ReplaceAll(s.Text, "<", `\<`)
+	text = strings.ReplaceAll(text, ">", `\>`)
 
 	r.writeLine("_" + strings.TrimSpace(s.Keyword) + "_ " + text)
 

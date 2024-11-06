@@ -1,16 +1,17 @@
-package main
+package main_test
 
 import (
 	"fmt"
 	"strings"
 	"testing"
 
-	gherkin "github.com/cucumber/gherkin/go/v27"
+	"github.com/cucumber/gherkin/go/v27"
+	"github.com/raviqqe/gherkin2markdown"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewRenderer(t *testing.T) {
-	NewRenderer()
+	main.NewRenderer()
 }
 
 func TestRendererRender(t *testing.T) {
@@ -108,7 +109,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ \<someone> does \<something>.
+_When_ \<someone\> does \<something\>.
 
 ### Examples
 
@@ -128,7 +129,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ \<someone> does \<something>.
+_When_ \<someone\> does \<something\>.
 
 ### Examples
 
@@ -152,7 +153,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ \<someone> does \<something>.
+_When_ \<someone\> does \<something\>.
 
 ### Examples
 
@@ -180,7 +181,7 @@ Feature: Foo
 
 ## Bar
 
-_When_ \<someone> does \<something>.
+_When_ \<someone\> does \<something\>.
 
 ### Examples
 
@@ -214,6 +215,6 @@ _When_ qux.
 		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]), func() string { return "" })
 
 		assert.Nil(t, err)
-		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", NewRenderer().Render(d))
+		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", main.NewRenderer().Render(d))
 	}
 }
