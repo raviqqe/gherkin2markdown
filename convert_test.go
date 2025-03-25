@@ -12,7 +12,7 @@ import (
 func TestConvertFile(t *testing.T) {
 	f, err := os.CreateTemp("", "")
 	assert.Nil(t, err)
-	defer os.Remove(f.Name())
+	defer func() { assert.Nil(t, os.Remove(f.Name())) }()
 
 	_, err = f.Write([]byte("Feature: Foo"))
 	assert.Nil(t, err)
@@ -23,7 +23,7 @@ func TestConvertFile(t *testing.T) {
 func TestConvertFileError(t *testing.T) {
 	f, err := os.CreateTemp("", "")
 	assert.Nil(t, err)
-	defer os.Remove(f.Name())
+	defer func() { assert.Nil(t, os.Remove(f.Name())) }()
 
 	_, err = f.Write([]byte("Feature"))
 	assert.Nil(t, err)
@@ -34,7 +34,7 @@ func TestConvertFileError(t *testing.T) {
 func TestConvertFilesWithNonReadableSourceDir(t *testing.T) {
 	d, err := os.MkdirTemp("", "")
 	assert.Nil(t, err)
-	defer os.RemoveAll(d)
+	defer func() { assert.Nil(t, os.RemoveAll(d)) }()
 
 	assert.NotNil(t, main.ConvertFiles("foo", d))
 }

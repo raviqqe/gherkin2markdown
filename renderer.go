@@ -19,7 +19,7 @@ func NewRenderer() *renderer {
 func (r *renderer) Render(d *messages.GherkinDocument) string {
 	r.renderFeature(d.Feature)
 
-	return r.Builder.String()
+	return r.String()
 }
 
 func (r *renderer) renderFeature(f *messages.Feature) {
