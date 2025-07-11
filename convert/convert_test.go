@@ -1,11 +1,10 @@
-package main_test
+package convert_test
 
 import (
 	"io"
 	"os"
 	"testing"
 
-	"github.com/raviqqe/gherkin2markdown"
 	"github.com/stretchr/testify/assert"
 )
 

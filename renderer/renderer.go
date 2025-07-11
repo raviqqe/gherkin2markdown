@@ -1,9 +1,9 @@
-package main
+package renderer
 
 import (
 	"strings"
 
-	"github.com/cucumber/messages/go/v22"
+	messages "github.com/cucumber/messages/go/v22"
 	"github.com/willf/pad/utf8"
 )
 

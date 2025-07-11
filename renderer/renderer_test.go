@@ -1,12 +1,11 @@
-package main_test
+package renderer_test
 
 import (
 	"fmt"
 	"strings"
 	"testing"
 
-	"github.com/cucumber/gherkin/go/v27"
-	"github.com/raviqqe/gherkin2markdown"
+	gherkin "github.com/cucumber/gherkin/go/v27"
 	"github.com/stretchr/testify/assert"
 )
 

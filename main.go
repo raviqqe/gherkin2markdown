@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/raviqqe/gherkin2markdown/convert"
 )
 
 func main() {
@@ -22,8 +24,8 @@ func Run(ss []string, w io.Writer) error {
 	if err != nil {
 		return err
 	} else if args.File == "" {
-		return ConvertFiles(args.SrcDir, args.DestDir)
+		return convert.ConvertFiles(args.SrcDir, args.DestDir)
 	}
 
-	return ConvertFile(args.File, w)
+	return convert.ConvertFile(args.File, w)
 }

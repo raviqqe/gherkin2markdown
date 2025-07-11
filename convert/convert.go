@@ -1,4 +1,4 @@
-package main
+package convert
 
 import (
 	"fmt"
@@ -8,7 +8,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cucumber/gherkin/go/v27"
+	gherkin "github.com/cucumber/gherkin/go/v27"
+	"github.com/raviqqe/gherkin2markdown/renderer"
 )
 
 const featureFileExtension = ".feature"
@@ -26,7 +27,7 @@ func ConvertFile(s string, w io.Writer) error {
 		return err
 	}
 
-	_, err = fmt.Fprint(w, NewRenderer().Render(d))
+	_, err = fmt.Fprint(w, renderer.NewRenderer().Render(d))
 	return err
 }
 
