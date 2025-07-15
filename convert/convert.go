@@ -14,7 +14,9 @@ import (
 
 const featureFileExtension = ".feature"
 
-func ConvertFile(s string, w io.Writer) error {
+// FeatureFile converts a single feature file at the given path and writes the
+// result to an [io.Writer].
+func FeatureFile(s string, w io.Writer) error {
 	f, err := os.Open(s)
 
 	if err != nil {
@@ -27,11 +29,14 @@ func ConvertFile(s string, w io.Writer) error {
 		return err
 	}
 
-	_, err = fmt.Fprint(w, renderer.NewRenderer().Render(d))
+	_, err = fmt.Fprint(w, renderer.New().Render(d))
 	return err
 }
 
-func ConvertFiles(s, d string) error {
+// FeatureFiles converts all feature files under the given directory and
+// writes each result to a markdown file of the same base name (with .feature
+// suffix removed and .md added).
+func FeatureFiles(s, d string) error {
 	ps := []string{}
 
 	err := filepath.Walk(s, func(p string, i os.FileInfo, err error) error {
@@ -66,7 +71,7 @@ func ConvertFiles(s, d string) error {
 				return
 			}
 
-			err = ConvertFile(p, f)
+			err = FeatureFile(p, f)
 
 			if err != nil {
 				es <- err

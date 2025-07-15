@@ -7,10 +7,12 @@ import (
 
 	gherkin "github.com/cucumber/gherkin/go/v27"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/raviqqe/gherkin2markdown/renderer"
 )
 
-func TestNewRenderer(t *testing.T) {
-	main.NewRenderer()
+func TestNew(t *testing.T) {
+	renderer.New()
 }
 
 func TestRendererRender(t *testing.T) {
@@ -214,6 +216,6 @@ _When_ qux.
 		d, err := gherkin.ParseGherkinDocument(strings.NewReader(ss[0]), func() string { return "" })
 
 		assert.Nil(t, err)
-		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", main.NewRenderer().Render(d))
+		assert.Equal(t, strings.TrimSpace(ss[1])+"\n", renderer.New().Render(d))
 	}
 }

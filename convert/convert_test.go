@@ -6,9 +6,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/raviqqe/gherkin2markdown/convert"
 )
 
-func TestConvertFile(t *testing.T) {
+func TestFeatureFile(t *testing.T) {
 	f, err := os.CreateTemp("", "")
 	assert.Nil(t, err)
 	defer func() { assert.Nil(t, os.Remove(f.Name())) }()
@@ -16,10 +18,10 @@ func TestConvertFile(t *testing.T) {
 	_, err = f.Write([]byte("Feature: Foo"))
 	assert.Nil(t, err)
 
-	assert.Nil(t, main.ConvertFile(f.Name(), io.Discard))
+	assert.Nil(t, convert.FeatureFile(f.Name(), io.Discard))
 }
 
-func TestConvertFileError(t *testing.T) {
+func TestFeatureFileError(t *testing.T) {
 	f, err := os.CreateTemp("", "")
 	assert.Nil(t, err)
 	defer func() { assert.Nil(t, os.Remove(f.Name())) }()
@@ -27,13 +29,13 @@ func TestConvertFileError(t *testing.T) {
 	_, err = f.Write([]byte("Feature"))
 	assert.Nil(t, err)
 
-	assert.NotNil(t, main.ConvertFile(f.Name(), io.Discard))
+	assert.NotNil(t, convert.FeatureFile(f.Name(), io.Discard))
 }
 
-func TestConvertFilesWithNonReadableSourceDir(t *testing.T) {
+func TestFeatureFilesWithNonReadableSourceDir(t *testing.T) {
 	d, err := os.MkdirTemp("", "")
 	assert.Nil(t, err)
 	defer func() { assert.Nil(t, os.RemoveAll(d)) }()
 
-	assert.NotNil(t, main.ConvertFiles("foo", d))
+	assert.NotNil(t, convert.FeatureFiles("foo", d))
 }

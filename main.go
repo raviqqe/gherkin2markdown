@@ -18,14 +18,15 @@ func main() {
 	}
 }
 
+// Run executes the CLI command.
 func Run(ss []string, w io.Writer) error {
 	args, err := GetArguments(ss)
 
 	if err != nil {
 		return err
 	} else if args.File == "" {
-		return convert.ConvertFiles(args.SrcDir, args.DestDir)
+		return convert.FeatureFiles(args.SrcDir, args.DestDir)
 	}
 
-	return convert.ConvertFile(args.File, w)
+	return convert.FeatureFile(args.File, w)
 }

@@ -7,15 +7,25 @@ import (
 	"github.com/willf/pad/utf8"
 )
 
+// Renderer represents various parts of a Cucumber document as Markdown
+// strings.
+type Renderer interface {
+	// Render returns a Markdown string for the given
+	// [*messages.GherkinDocument].
+	Render(d *messages.GherkinDocument) string
+}
+
 type renderer struct {
 	*strings.Builder
 	depth int
 }
 
-func NewRenderer() *renderer {
+// New returns a new [Renderer].
+func New() Renderer {
 	return &renderer{&strings.Builder{}, 0}
 }
 
+// Render returns a Markdown string for the given [*messages.GherkinDocument].
 func (r *renderer) Render(d *messages.GherkinDocument) string {
 	r.renderFeature(d.Feature)
 
