@@ -3,7 +3,7 @@ package renderer
 import (
 	"strings"
 
-	"github.com/cucumber/messages/go/v24"
+	messages "github.com/cucumber/messages/go/v24"
 	"github.com/willf/pad/utf8"
 )
 
@@ -158,14 +158,19 @@ func (r *renderer) renderExamples(es []*messages.Examples) {
 		r.writeDescription(e.Description)
 
 		r.writeLine("")
-		r.renderExampleTable(e.TableHeader, e.TableBody)
+		r.renderTable(e.TableHeader, e.TableBody)
 	}
 }
 
-func (r renderer) renderExampleTable(h *messages.TableRow, rs []*messages.TableRow) {
+func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
 	ws := r.getCellWidths(append([]*messages.TableRow{h}, rs...))
 
-	r.renderCells(h.Cells, ws)
+	if h == nil {
+		empty := make([]*messages.TableCell, len(ws))
+		r.renderCells(empty, ws)
+	} else {
+		r.renderCells(h.Cells, ws)
+	}
 
 	s := "|"
 
@@ -181,30 +186,45 @@ func (r renderer) renderExampleTable(h *messages.TableRow, rs []*messages.TableR
 }
 
 func (r renderer) renderDataTable(t *messages.DataTable) {
-	ws := r.getCellWidths(t.Rows)
-
-	for _, t := range t.Rows {
-		r.renderCells(t.Cells, ws)
-	}
+	r.renderTable(nil, t.Rows)
 }
 
 func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	s := "|"
+	cn := len(cs)
 
-	for i, c := range cs {
-		s += " " + utf8.Right(c.Value, ws[i], " ") + " |"
+	for i := range ws {
+		v := ""
+
+		if cn > i && cs[i] != nil {
+			v = cs[i].Value
+		}
+
+		s += " " + utf8.Right(v, ws[i], " ") + " |"
 	}
 
 	r.writeLine(s)
 }
 
 func (renderer) getCellWidths(rs []*messages.TableRow) []int {
-	ws := make([]int, len(rs[0].Cells))
+	cols := 0
 
 	for _, r := range rs {
-		for i, c := range r.Cells {
-			if w := len(c.Value); w > ws[i] {
-				ws[i] = w
+		if r != nil {
+			if n := len(r.Cells); n > cols {
+				cols = n
+			}
+		}
+	}
+
+	ws := make([]int, cols)
+
+	for _, r := range rs {
+		if r != nil {
+			for i, c := range r.Cells {
+				if w := len(c.Value); w > ws[i] {
+					ws[i] = w
+				}
 			}
 		}
 	}
