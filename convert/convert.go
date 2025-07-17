@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	gherkin "github.com/cucumber/gherkin/go/v27"
+	"github.com/cucumber/gherkin/go/v28"
 	"github.com/raviqqe/gherkin2markdown/renderer"
 )
 
