@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/raviqqe/gherkin2markdown/convert"
 )
 
 func main() {
@@ -16,14 +18,15 @@ func main() {
 	}
 }
 
+// Run executes the CLI command.
 func Run(ss []string, w io.Writer) error {
 	args, err := GetArguments(ss)
 
 	if err != nil {
 		return err
 	} else if args.File == "" {
-		return ConvertFiles(args.SrcDir, args.DestDir)
+		return convert.FeatureFiles(args.SrcDir, args.DestDir)
 	}
 
-	return ConvertFile(args.File, w)
+	return convert.FeatureFile(args.File, w)
 }
