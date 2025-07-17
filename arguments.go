@@ -8,7 +8,7 @@ const usage = `Gherkin to Markdown converter
 
 Usage:
 	gherkin2markdown <file>
-	gherkin2markdown <srcdir> <destdir>
+	gherkin2markdown <src_dir> <dest_dir>
 
 Options:
 	-h, --help  Show this help.`
@@ -16,8 +16,8 @@ Options:
 // Arguments is the available CLI arguments.
 type Arguments struct {
 	File    string `docopt:"<file>"`
-	SrcDir  string `docopt:"<srcdir>"`
-	DestDir string `docopt:"<destdir>"`
+	SrcDir  string `docopt:"<src_dir>"`
+	DestDir string `docopt:"<dest_dir>"`
 }
 
 // GetArguments return the CLI arguments.

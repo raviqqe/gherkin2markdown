@@ -22,7 +22,7 @@ gherkin2markdown <file>
 or
 
 ```
-gherkin2markdown <srcdir> <destdir>
+gherkin2markdown <src_dir> <dest_dir>
 ```
 
 ## Example

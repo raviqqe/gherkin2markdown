@@ -1,0 +1,14 @@
+{
+  "ignorePaths": ["go.sum"],
+  "words": [
+    "covermode",
+    "coverprofile",
+    "docopt",
+    "golangci",
+    "gopkg",
+    "raviqqe",
+    "stretchr",
+    "willf",
+    "yota"
+  ]
+}
