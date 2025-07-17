@@ -21,8 +21,8 @@ type Arguments struct {
 }
 
 // GetArguments return the CLI arguments.
-func GetArguments(ss []string) (arguments, error) {
-	args := arguments{}
+func GetArguments(ss []string) (Arguments, error) {
+	args := Arguments{}
 	err := parseArguments(usage, ss, &args)
 	return args, err
 }
