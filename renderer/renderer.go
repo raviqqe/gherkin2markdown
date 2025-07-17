@@ -3,7 +3,7 @@ package renderer
 import (
 	"strings"
 
-	messages "github.com/cucumber/messages/go/v22"
+	"github.com/cucumber/messages/go/v22"
 	"github.com/willf/pad/utf8"
 )
 
