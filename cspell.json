@@ -1,3 +1,4 @@
 {
+  "ignorePaths": ["go.sum"],
   "words": ["docopt", "gopkg", "raviqqe", "stretchr", "willf", "yota"]
 }
