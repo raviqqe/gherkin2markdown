@@ -139,7 +139,7 @@ func (r *renderer) renderStep(s *messages.Step, last bool) {
 
 	if s.DataTable != nil {
 		r.writeLine("")
-		r.renderDataTable(s.DataTable)
+		r.renderTable(nil, s.DataTable.Rows)
 	}
 }
 
@@ -164,13 +164,13 @@ func (r *renderer) renderExamples(es []*messages.Examples) {
 
 func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
 	ws := r.getCellWidths(append([]*messages.TableRow{h}, rs...))
+	cs := make([]*messages.TableCell, len(ws))
 
-	if h == nil {
-		empty := make([]*messages.TableCell, len(ws))
-		r.renderCells(empty, ws)
-	} else {
-		r.renderCells(h.Cells, ws)
+	if h != nil {
+		cs = h.Cells
 	}
+
+	r.renderCells(cs, ws)
 
 	s := "|"
 
@@ -183,10 +183,6 @@ func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
 	for _, t := range rs {
 		r.renderCells(t.Cells, ws)
 	}
-}
-
-func (r renderer) renderDataTable(t *messages.DataTable) {
-	r.renderTable(nil, t.Rows)
 }
 
 func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
@@ -207,17 +203,7 @@ func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 }
 
 func (renderer) getCellWidths(rs []*messages.TableRow) []int {
-	cols := 0
-
-	for _, r := range rs {
-		if r != nil {
-			if n := len(r.Cells); n > cols {
-				cols = n
-			}
-		}
-	}
-
-	ws := make([]int, cols)
+	ws := make([]int, len(rs[len(rs)-1].Cells))
 
 	for _, r := range rs {
 		if r != nil {
