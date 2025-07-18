@@ -203,14 +203,12 @@ func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 }
 
 func (renderer) getCellWidths(rs []*messages.TableRow) []int {
-	ws := make([]int, len(rs[len(rs)-1].Cells))
+	ws := make([]int, len(rs[0].Cells))
 
 	for _, r := range rs {
-		if r != nil {
-			for i, c := range r.Cells {
-				if w := len(c.Value); w > ws[i] {
-					ws[i] = w
-				}
+		for i, c := range r.Cells {
+			if w := len(c.Value); w > ws[i] {
+				ws[i] = w
 			}
 		}
 	}
