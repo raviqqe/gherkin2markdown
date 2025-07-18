@@ -163,7 +163,7 @@ func (r *renderer) renderExamples(es []*messages.Examples) {
 }
 
 func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
-	ws := r.getCellWidths(append([]*messages.TableRow{h}, rs...))
+	ws := r.getCellWidths(h, rs)
 	cs := make([]*messages.TableCell, len(ws))
 
 	if h != nil {
@@ -189,14 +189,26 @@ func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	s := "|"
 
 	for i, c := range cs {
-		s += " " + utf8.Right(c.Value, ws[i], " ") + " |"
+		v := ""
+
+		if c != nil {
+			v = c.Value
+		}
+
+		s += " " + utf8.Right(v, ws[i], " ") + " |"
 	}
 
 	r.writeLine(s)
 }
 
-func (renderer) getCellWidths(rs []*messages.TableRow) []int {
+func (renderer) getCellWidths(h *messages.TableRow, rs []*messages.TableRow) []int {
 	ws := make([]int, len(rs[0].Cells))
+
+	if h != nil {
+		for i, c := range h.Cells {
+			ws[i] = len(c.Value)
+		}
+	}
 
 	for _, r := range rs {
 		for i, c := range r.Cells {
