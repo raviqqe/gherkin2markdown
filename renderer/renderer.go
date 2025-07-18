@@ -139,7 +139,7 @@ func (r *renderer) renderStep(s *messages.Step, last bool) {
 
 	if s.DataTable != nil {
 		r.writeLine("")
-		r.renderDataTable(s.DataTable)
+		r.renderTable(nil, s.DataTable.Rows)
 	}
 }
 
@@ -163,14 +163,14 @@ func (r *renderer) renderExamples(es []*messages.Examples) {
 }
 
 func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
-	ws := r.getCellWidths(append([]*messages.TableRow{h}, rs...))
+	ws := r.getCellWidths(h, rs)
+	cs := make([]*messages.TableCell, len(ws))
 
-	if h == nil {
-		empty := make([]*messages.TableCell, len(ws))
-		r.renderCells(empty, ws)
-	} else {
-		r.renderCells(h.Cells, ws)
+	if h != nil {
+		cs = h.Cells
 	}
+
+	r.renderCells(cs, ws)
 
 	s := "|"
 
@@ -185,19 +185,14 @@ func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
 	}
 }
 
-func (r renderer) renderDataTable(t *messages.DataTable) {
-	r.renderTable(nil, t.Rows)
-}
-
 func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	s := "|"
-	cn := len(cs)
 
-	for i := range ws {
+	for i, c := range cs {
 		v := ""
 
-		if cn > i && cs[i] != nil {
-			v = cs[i].Value
+		if c != nil {
+			v = c.Value
 		}
 
 		s += " " + utf8.Right(v, ws[i], " ") + " |"
@@ -206,30 +201,24 @@ func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	r.writeLine(s)
 }
 
-func (renderer) getCellWidths(rs []*messages.TableRow) []int {
-	cols := 0
+func (r renderer) getCellWidths(h *messages.TableRow, rs []*messages.TableRow) []int {
+	ws := make([]int, len(rs[0].Cells))
 
-	for _, r := range rs {
-		if r != nil {
-			if n := len(r.Cells); n > cols {
-				cols = n
-			}
-		}
+	if h != nil {
+		r.updateCellWidths(h, ws)
 	}
 
-	ws := make([]int, cols)
-
-	for _, r := range rs {
-		if r != nil {
-			for i, c := range r.Cells {
-				if w := len(c.Value); w > ws[i] {
-					ws[i] = w
-				}
-			}
-		}
+	for _, row := range rs {
+		r.updateCellWidths(row, ws)
 	}
 
 	return ws
+}
+
+func (renderer) updateCellWidths(r *messages.TableRow, ws []int) {
+	for i, c := range r.Cells {
+		ws[i] = max(ws[i], len(c.Value))
+	}
 }
 
 func (r renderer) writeDescription(s string) {

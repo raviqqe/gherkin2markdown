@@ -1,5 +1,5 @@
 {
-  "ignorePaths": ["go.sum"],
+  "ignorePaths": ["go.mod", "go.sum"],
   "words": [
     "covermode",
     "coverprofile",
