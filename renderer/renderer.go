@@ -187,16 +187,9 @@ func (r renderer) renderTable(h *messages.TableRow, rs []*messages.TableRow) {
 
 func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	s := "|"
-	cn := len(cs)
 
-	for i := range ws {
-		v := ""
-
-		if cn > i && cs[i] != nil {
-			v = cs[i].Value
-		}
-
-		s += " " + utf8.Right(v, ws[i], " ") + " |"
+	for i, c := range cs {
+		s += " " + utf8.Right(c.Value, ws[i], " ") + " |"
 	}
 
 	r.writeLine(s)
