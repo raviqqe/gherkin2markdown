@@ -217,9 +217,7 @@ func (r renderer) getCellWidths(h *messages.TableRow, rs []*messages.TableRow) [
 
 func (renderer) updateCellWidths(r *messages.TableRow, ws []int) {
 	for i, c := range r.Cells {
-		if w := len(c.Value); w > ws[i] {
-			ws[i] = w
-		}
+		ws[i] = max(ws[i], len(c.Value))
 	}
 }
 
