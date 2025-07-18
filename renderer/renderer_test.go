@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cucumber/gherkin/go/v28"
+	gherkin "github.com/cucumber/gherkin/go/v28"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/raviqqe/gherkin2markdown/renderer"
@@ -95,8 +95,27 @@ Feature: Foo
 
 _Given_ Baz:
 
+|     |
+|-----|
 | foo |
 | bar |`,
+		},
+		{`
+Feature: Foo
+  Background: Bar
+  Given Baz:
+    | foo | baz |
+    | bar | qux |`, `
+# Foo
+
+## Background (Bar)
+
+_Given_ Baz:
+
+|     |     |
+|-----|-----|
+| foo | baz |
+| bar | qux |`,
 		},
 		{`
 Feature: Foo
