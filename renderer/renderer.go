@@ -201,24 +201,26 @@ func (r renderer) renderCells(cs []*messages.TableCell, ws []int) {
 	r.writeLine(s)
 }
 
-func (renderer) getCellWidths(h *messages.TableRow, rs []*messages.TableRow) []int {
+func (r renderer) getCellWidths(h *messages.TableRow, rs []*messages.TableRow) []int {
 	ws := make([]int, len(rs[0].Cells))
 
 	if h != nil {
-		for i, c := range h.Cells {
-			ws[i] = len(c.Value)
-		}
+		r.updateCellWidths(h, ws)
 	}
 
-	for _, r := range rs {
-		for i, c := range r.Cells {
-			if w := len(c.Value); w > ws[i] {
-				ws[i] = w
-			}
-		}
+	for _, row := range rs {
+		r.updateCellWidths(row, ws)
 	}
 
 	return ws
+}
+
+func (renderer) updateCellWidths(r *messages.TableRow, ws []int) {
+	for i, c := range r.Cells {
+		if w := len(c.Value); w > ws[i] {
+			ws[i] = w
+		}
+	}
 }
 
 func (r renderer) writeDescription(s string) {
