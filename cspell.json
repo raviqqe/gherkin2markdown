@@ -6,6 +6,7 @@
     "docopt",
     "golangci",
     "gopkg",
+    "pflag",
     "raviqqe",
     "stretchr",
     "willf",

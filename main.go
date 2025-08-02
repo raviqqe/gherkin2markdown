@@ -6,7 +6,10 @@ import (
 	"os"
 
 	"github.com/raviqqe/gherkin2markdown/convert"
+	"github.com/spf13/pflag"
 )
+
+const version = "0.1.0"
 
 func main() {
 	if err := Run(os.Args[1:], os.Stdout); err != nil {
@@ -24,9 +27,15 @@ func Run(ss []string, w io.Writer) error {
 
 	if err != nil {
 		return err
-	} else if args.File == "" {
-		return convert.FeatureFiles(args.SrcDir, args.DestDir)
+	} else if args.Help {
+		pflag.PrintDefaults()
+		return nil
+	} else if args.Version {
+		_, err := fmt.Fprintln(w, version)
+		return err
+	} else if args.SrcDir == "" || args.DestDir == "" {
+		return fmt.Errorf("source and destination directories required")
 	}
 
-	return convert.FeatureFile(args.File, w)
+	return convert.FeatureFiles(args.SrcDir, args.DestDir)
 }
