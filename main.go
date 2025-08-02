@@ -23,9 +23,11 @@ func main() {
 
 // Run executes the CLI command.
 func Run(ss []string, w io.Writer) error {
-	args := GetArguments(ss)
+	args, err := GetArguments(ss)
 
-	if args.Help {
+	if err != nil {
+		return err
+	} else if args.Help {
 		pflag.PrintDefaults()
 		return nil
 	} else if args.Version {

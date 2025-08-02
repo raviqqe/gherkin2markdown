@@ -11,18 +11,21 @@ type Arguments struct {
 	Version bool
 }
 
-// GetArguments return the CLI arguments.
-func GetArguments(ss []string) Arguments {
+func GetArguments(ss []string) (Arguments, error) {
+	s := pflag.NewFlagSet(ss[0], pflag.ContinueOnError)
 	args := Arguments{}
 
-	pflag.BoolVar(&args.Help, "help", false, "show help")
-	pflag.BoolVar(&args.Version, "version", false, "show version")
-	pflag.Parse()
+	s.BoolVar(&args.Help, "help", false, "show help")
+	s.BoolVar(&args.Version, "version", false, "show version")
+
+	if err := s.Parse(ss); err != nil {
+		return args, err
+	}
 
 	if ds := pflag.Args(); len(ds) == 2 {
 		args.SrcDir = ds[0]
 		args.DestDir = ds[1]
 	}
 
-	return args
+	return args, nil
 }

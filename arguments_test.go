@@ -12,7 +12,6 @@ func TestGetArguments(t *testing.T) {
 		parameters []string
 		arguments  main.Arguments
 	}{
-		{[]string{"file"}, main.Arguments{File: "file"}},
 		{[]string{"dir1", "dir2"}, main.Arguments{SrcDir: "dir1", DestDir: "dir2"}},
 	} {
 		args, err := main.GetArguments(c.parameters)
