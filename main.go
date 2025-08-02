@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/raviqqe/gherkin2markdown/convert"
-	"github.com/spf13/pflag"
 )
 
 const version = "0.1.0"
