@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/spf13/pflag"
 )
 
@@ -12,7 +14,7 @@ type Arguments struct {
 }
 
 func GetArguments(ss []string) (Arguments, error) {
-	s := pflag.NewFlagSet(ss[0], pflag.ContinueOnError)
+	s := pflag.NewFlagSet(os.Args[0], pflag.ContinueOnError)
 	args := Arguments{}
 
 	s.BoolVar(&args.Help, "help", false, "show help")
@@ -22,7 +24,7 @@ func GetArguments(ss []string) (Arguments, error) {
 		return args, err
 	}
 
-	if ds := pflag.Args(); len(ds) == 2 {
+	if ds := s.Args(); len(ds) == 2 {
 		args.SrcDir = ds[0]
 		args.DestDir = ds[1]
 	}

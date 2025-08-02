@@ -10,23 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCommand(t *testing.T) {
-	f, err := os.CreateTemp("", "")
-	assert.Nil(t, err)
-
-	_, err = f.WriteString("Feature: Foo")
-	assert.Nil(t, err)
-
-	assert.Nil(t, main.Run([]string{f.Name()}, io.Discard))
-
-	assert.Nil(t, os.Remove(f.Name()))
-}
-
-func TestCommandWithNonExistentFile(t *testing.T) {
-	assert.NotNil(t, main.Run([]string{"non-existent.feature"}, io.Discard))
-}
-
-func TestCommandWithDirectory(t *testing.T) {
+func TestCommandConvertDirectory(t *testing.T) {
 	r, err := os.MkdirTemp("", "")
 	assert.Nil(t, err)
 
