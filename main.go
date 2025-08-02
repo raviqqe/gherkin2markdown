@@ -29,8 +29,8 @@ func Run(ss []string, w io.Writer) error {
 		pflag.PrintDefaults()
 		return nil
 	} else if args.Version {
-		fmt.Fprintln(w, version)
-		return nil
+		_, err := fmt.Fprintln(w, version)
+		return err
 	} else if args.SrcDir == "" || args.DestDir == "" {
 		return fmt.Errorf("source and destination directories required")
 	}
