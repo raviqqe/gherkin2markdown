@@ -6,6 +6,7 @@
     "docopt",
     "golangci",
     "gopkg",
+    "goreleaser",
     "pflag",
     "raviqqe",
     "stretchr",
