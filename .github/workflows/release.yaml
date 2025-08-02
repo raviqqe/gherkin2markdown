@@ -1,0 +1,23 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: setup
+        run: echo version=$(go run . --version) >> ${{ github.output }}
+      - uses: raviqqe/goreleaser-action@v1
+        with:
+          version: v${{ steps.setup.outputs.version }}
+          snapshot: ${{ github.ref != 'refs/heads/main' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
