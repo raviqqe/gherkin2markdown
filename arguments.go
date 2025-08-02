@@ -1,41 +1,28 @@
 package main
 
 import (
-	"github.com/docopt/docopt-go"
+	"github.com/spf13/pflag"
 )
 
-const usage = `Gherkin to Markdown converter
-
-Usage:
-	gherkin2markdown <file>
-	gherkin2markdown <src_dir> <dest_dir>
-
-Options:
-	-h, --help  Show this help.
-	--version   Show version information.
-`
-
-// Arguments is the available CLI arguments.
 type Arguments struct {
-	File    string `docopt:"<file>"`
-	SrcDir  string `docopt:"<src_dir>"`
-	DestDir string `docopt:"<dest_dir>"`
+	SrcDir  string
+	DestDir string
+	Help    bool
 	Version bool
 }
 
 // GetArguments return the CLI arguments.
-func GetArguments(ss []string) (Arguments, error) {
+func GetArguments(ss []string) Arguments {
 	args := Arguments{}
-	err := parseArguments(usage, ss, &args)
-	return args, err
-}
 
-func parseArguments(u string, ss []string, args any) error {
-	opts, err := docopt.ParseArgs(u, ss, "")
+	pflag.BoolVar(&args.Help, "help", false, "show help")
+	pflag.BoolVar(&args.Version, "version", false, "show version")
+	pflag.Parse()
 
-	if err != nil {
-		return err
+	if ds := pflag.Args(); len(ds) == 2 {
+		args.SrcDir = ds[0]
+		args.DestDir = ds[1]
 	}
 
-	return opts.Bind(args)
+	return args
 }
