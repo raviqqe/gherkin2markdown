@@ -9,7 +9,6 @@ import (
 type Arguments struct {
 	SrcDir  string
 	DestDir string
-	Help    bool
 	Version bool
 }
 
@@ -17,7 +16,6 @@ func GetArguments(ss []string) (Arguments, error) {
 	s := pflag.NewFlagSet(os.Args[0], pflag.ContinueOnError)
 	args := Arguments{}
 
-	s.BoolVar(&args.Help, "help", false, "show help")
 	s.BoolVar(&args.Version, "version", false, "show version")
 
 	if err := s.Parse(ss); err != nil {

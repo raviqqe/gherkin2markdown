@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/raviqqe/gherkin2markdown/convert"
-	"github.com/spf13/pflag"
 )
 
 const version = "0.1.0"
@@ -27,9 +26,6 @@ func Run(ss []string, w io.Writer) error {
 
 	if err != nil {
 		return err
-	} else if args.Help {
-		pflag.PrintDefaults()
-		return nil
 	} else if args.Version {
 		_, err := fmt.Fprintln(w, version)
 		return err
