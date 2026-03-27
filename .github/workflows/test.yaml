@@ -12,7 +12,7 @@ jobs:
       - run: go build
       - uses: golangci/golangci-lint-action@e7fa5ac41e1cf5b7d48e45e42232ce7ada589601 # v9.1.0
       - run: go test -covermode atomic -coverprofile coverage.txt ./...
-      - uses: codecov/codecov-action@75cd11691c0faa626561e295848008c8a7dddffe # v5.5.4
+      - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
   spell_check:
     runs-on: ubuntu-latest
     steps:
