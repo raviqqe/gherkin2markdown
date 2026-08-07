@@ -5,6 +5,7 @@
     "coverprofile",
     "docopt",
     "golangci",
+    "gomod",
     "gopkg",
     "goreleaser",
     "pflag",
